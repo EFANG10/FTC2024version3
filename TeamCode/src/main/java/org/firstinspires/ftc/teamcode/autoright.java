@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.Pose2d;
+
+import com.acmerobotics.roadrunner.drive.MecanumDrive;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //import com.acmerobotics.roadrunner.drive.MecanumDrive;
 //import com.acmerobotics.roadrunner.drive.DriveConstants;
@@ -27,7 +29,7 @@ public class autoright extends LinearOpMode {
     private DcMotor leftextend, lefttilt, rightextend, righttilt;
 
     // Roadrunner Drive
-    MecanumDrive drive;
+
     Pose2d Pos;
     @Override
     public void runOpMode() {

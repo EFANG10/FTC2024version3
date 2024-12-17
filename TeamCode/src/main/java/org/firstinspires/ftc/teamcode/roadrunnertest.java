@@ -1,17 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.TankDrive;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Trajectory;
+
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -21,56 +19,60 @@ import androidx.annotation.NonNull;
 // RR-specific imports
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
+
 
 // Non-RR imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name="autoright")
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+
+@Autonomous(name="roadrunnertest")
 //@Disabled
 public class roadrunnertest extends LinearOpMode {
 
-    private DcMotor leftFrontDrive = hardwareMap.get(DcMotor.class, "front left");
-    private DcMotor leftBackDrive = hardwareMap.get(DcMotor.class, "back left");
-    private DcMotor rightFrontDrive = hardwareMap.get(DcMotor.class, "front right");
-    private DcMotor rightBackDrive = hardwareMap.get(DcMotor.class, "back right");
-    private DcMotor leftextend = hardwareMap.get(DcMotor.class, "leftextend");
-    private DcMotor lefttilt = hardwareMap.get(DcMotor.class, "lefttilt");
-    private DcMotor rightextend = hardwareMap.get(DcMotor.class, "rightextend");
-    private DcMotor righttilt = hardwareMap.get(DcMotor.class, "righttilt");
+    private DcMotorEx leftFrontDrive = null;
+    private DcMotorEx leftBackDrive = null;
+    private DcMotorEx rightFrontDrive = null;
+    private DcMotorEx rightBackDrive = null;
+    private DcMotorEx leftExtend = null;
+    private DcMotorEx leftTilt = null;
+    private DcMotorEx rightExtend = null;
+    private DcMotorEx rightTilt = null;
 
 
 
     // Set motor directions if necessary (adjust according to your robot configuration)
 
     public void runOpMode() {
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "front left");
+        leftBackDrive  = hardwareMap.get(DcMotorEx.class, "back left");
+        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "front right");
+        rightBackDrive = hardwareMap.get(DcMotorEx.class, "back right");
+        rightTilt = hardwareMap.get(DcMotorEx.class, "righttilt");
+        leftTilt = hardwareMap.get(DcMotorEx.class, "lefttilt");
+        leftExtend = hardwareMap.get(DcMotorEx.class, "leftextend");
+        rightExtend = hardwareMap.get(DcMotorEx.class, "rightextend");
+
+
+        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
 
 
 
         Pose2d initialPose = new Pose2d(0.0, 0.0, Math.toRadians(0));
         //
-        Pose2d nextPose = new Pose2d(12.0, 12.0, Math.toRadians(45))
+        Pose2d nextPose = new Pose2d(12.0, 12.0, Math.toRadians(45));
         // Initialize Roadrunner drive system (assuming a mecanum drive)
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-        Trajectory myTrajectory = drive.trajectoryBuilder(new Pose2d())
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        TrajectorySequence myTrajectory = drive.trajectorySequenceBuilder(new Pose2d())
                 .strafeRight(10)
                 .forward(5)
-                .build();
-        new TrajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(12.0, 12.0), Math.toRadians(45))
                 .build();
 
 

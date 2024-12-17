@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="autoright")
+@Autonomous(name="autoright1")
 //@Disabled
 public class auto2 extends LinearOpMode {
     // Declare OpMode members for each of the 4 motors.
